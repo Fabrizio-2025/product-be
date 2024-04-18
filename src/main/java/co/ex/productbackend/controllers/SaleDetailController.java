@@ -66,6 +66,20 @@ public class SaleDetailController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/by-sale/{saleId}")
+    public ResponseEntity<List<SaleDetailDTO>> getSaleDetailsBySaleId(@PathVariable Long saleId) {
+        List<SaleDetail> saleDetails = saleDetailService.findSaleDetailsBySaleId(saleId);
+        if (saleDetails.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<SaleDetailDTO> saleDetailDTOs = saleDetails.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(saleDetailDTOs);
+    }
+
+
+
     private SaleDetailDTO convertToDTO(SaleDetail saleDetail) {
         return new SaleDetailDTO(
                 saleDetail.getId(),
@@ -77,6 +91,7 @@ public class SaleDetailController {
                 saleDetail.getPrice()
         );
     }
+
 
     private SaleDetail convertToEntity(SaleDetailDTO saleDetailDTO) {
         SaleDetail saleDetail = new SaleDetail();
@@ -91,4 +106,6 @@ public class SaleDetailController {
         saleDetail.setPrice(saleDetailDTO.getSalePrice());
         return saleDetail;
     }
+
+
 }
