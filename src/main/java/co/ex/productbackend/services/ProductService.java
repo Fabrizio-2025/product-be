@@ -21,12 +21,19 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public Optional<Product> getProductByName(String name) {
+        return productRepository.findByName(name);
+    }
+
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
 
     public Product saveProduct(Product product) {
-        // Aquí puedes añadir lógica antes de guardar el producto
+        Optional<Product> existingProduct = productRepository.findByName(product.getName());
+        if (existingProduct.isPresent()) {
+            throw new IllegalStateException("Ya existe un producto con el nombre: " + product.getName());
+        }
         return productRepository.save(product);
     }
 

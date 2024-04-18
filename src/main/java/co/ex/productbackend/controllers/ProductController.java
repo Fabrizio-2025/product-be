@@ -39,10 +39,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
-        Product product = convertToEntity(productDTO);
-        Product createdProduct = productService.saveProduct(product);
-        return convertToDto(createdProduct);
+    public ResponseEntity<?> createProduct(@RequestBody ProductDTO productDTO) {
+        try {
+            Product product = convertToEntity(productDTO);
+            Product createdProduct = productService.saveProduct(product);
+            return ResponseEntity.ok(convertToDto(createdProduct));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
