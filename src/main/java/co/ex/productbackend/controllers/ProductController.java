@@ -59,6 +59,22 @@ public class ProductController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/searchp")
+    public ResponseEntity<List<ProductDTO>> getProductsByPrice(@RequestParam Integer price) {
+        List<ProductDTO> productDTOs = productService.findProductsByPrice(price).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(productDTOs);
+    }
+
+    @GetMapping("/searchb")
+    public ResponseEntity<List<ProductDTO>> getProductsByBrand(@RequestParam String brand) {
+        List<ProductDTO> productDTOs = productService.findProductsByBrand(brand).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(productDTOs);
+    }
+
     private ProductDTO convertToDto(Product product) {
         return new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getBrand(), product.getPrice());
     }

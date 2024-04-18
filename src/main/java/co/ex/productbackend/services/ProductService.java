@@ -34,8 +34,8 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<Product> findProductsByName(String name) {
-        return productRepository.findByName(name);
+    public List<Product> findProductsByPrice(Integer price) {
+        return productRepository.findByPrice(price);
     }
 
     public List<Product> findProductsByBrand(String brand) {
