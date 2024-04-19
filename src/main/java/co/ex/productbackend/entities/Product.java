@@ -1,7 +1,11 @@
 package co.ex.productbackend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+
 
 import java.math.BigDecimal;
 
@@ -22,7 +26,7 @@ public class Product {
     @Column(name = "brand")
     private String brand;
 
-    @Column(name = "stock")
+    @Column(name = "price")
     private BigDecimal price;
 
     // Standard constructors, getters and setters

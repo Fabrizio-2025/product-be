@@ -3,7 +3,9 @@ package co.ex.productbackend.controllers;
 import co.ex.productbackend.DTOS.ProductDTO;
 import co.ex.productbackend.entities.Product;
 import co.ex.productbackend.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
