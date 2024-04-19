@@ -71,5 +71,8 @@ public class ProductService {
         if (product.getPrice().compareTo(new BigDecimal("1000")) >= 0) {
             throw new IllegalArgumentException("El precio del producto debe ser menor que 1000.");
         }
+        else{
+            throw new IllegalArgumentException("Verifique los datos ingresados.");
+        }
     }
 }
