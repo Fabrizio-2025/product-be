@@ -2,8 +2,10 @@ package co.ex.productbackend.controllers;
 
 import co.ex.productbackend.DTOS.ProductDTO;
 import co.ex.productbackend.entities.Product;
+import co.ex.productbackend.exception.ModeloNotFoundException;
 import co.ex.productbackend.services.ProductService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,80 +16,38 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
-@CrossOrigin(origins = "http://localhost:5173")
 public class ProductController {
 
-    private final ProductService productService;
+    @Autowired
+    private ProductService service;
 
     @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
+    private ModelMapper mapper;
 
     @GetMapping
-    public List<ProductDTO> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        return products.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<ProductDTO>> listar() throws Exception {
+        List<ProductDTO> lista = service.listar().stream().map(p->mapper.map(p, ProductDTO.class)).collect(Collectors.toList());
+        return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id)
-                .map(this::convertToDto)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ProductDTO> listarPorId(@PathVariable("id") Long id) throws Exception {
+        ProductDTO dtoResponse;
+        Product obj = service.listarPorId(id);
+        if (obj==null) {
+            throw new ModeloNotFoundException("Id No encontrado "+id);
+
+        } else {
+            dtoResponse = mapper.map(obj, ProductDTO.class);
+        }
+
+        return new ResponseEntity<>(dtoResponse,HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody ProductDTO productDTO) {
-        try {
-            Product product = convertToEntity(productDTO);
-            Product createdProduct = productService.saveProduct(product);
-            return ResponseEntity.ok(convertToDto(createdProduct));
-        } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Void> registrar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
+        Product p = mapper.map(dtoRequest,Product.class);
+        Product obj = service.registrar(p);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-        Product product = convertToEntity(productDTO);
-        product.setId(id);
-        Product updatedProduct = productService.saveProduct(product);
-        return ResponseEntity.ok(convertToDto(updatedProduct));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/searchp")
-    public ResponseEntity<List<ProductDTO>> getProductsByPrice(@RequestParam Integer price) {
-        List<ProductDTO> productDTOs = productService.findProductsByPrice(price).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(productDTOs);
-    }
-
-    @GetMapping("/searchb")
-    public ResponseEntity<List<ProductDTO>> getProductsByBrand(@RequestParam String brand) {
-        List<ProductDTO> productDTOs = productService.findProductsByBrand(brand).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(productDTOs);
-    }
-
-    private ProductDTO convertToDto(Product product) {
-        return new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getBrand(), product.getPrice());
-    }
-
-    private Product convertToEntity(ProductDTO productDTO) {
-        return new Product(productDTO.getName(), productDTO.getDescription(), productDTO.getBrand(), productDTO.getPrice());
-    }
-
-
 }

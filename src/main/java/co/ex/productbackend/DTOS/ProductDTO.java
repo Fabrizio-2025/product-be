@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class ProductDTO {
 
     private Long id;
-
+    @Size(min=3,max = 70,message = "{name.size}")
     private String name;
 
     private String description;

@@ -1,8 +1,6 @@
 package co.ex.productbackend.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -18,6 +16,7 @@ public class Product {
     private Long id;
 
     @Column(name = "name", nullable = false)
+    @Size(min = 3, max = 70, message = "{name.size}")
     private String name;
 
     @Column(name = "description")
