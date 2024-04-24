@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface ProductRepository extends GenericRepo<Product, Long> {
 
     Optional<Product> findByName(String name);
+
     List<Product> findByPrice(Integer price);
 
-    // O por marca
     List<Product> findByBrand(String brand);
 
 }

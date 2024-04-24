@@ -53,7 +53,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> Modificar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
-        Product product = service.listarPorId(dtoRequest.getId());
+        Product product = service.listarPorId(Long.parseLong(dtoRequest.getId()));
         if(product == null){
             throw new ModeloNotFoundException("Id No encontrado "+dtoRequest.getId());
         }
