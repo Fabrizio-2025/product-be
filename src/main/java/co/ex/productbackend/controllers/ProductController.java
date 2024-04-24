@@ -50,4 +50,30 @@ public class ProductController {
         Product obj = service.registrar(p);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> Modificar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
+        Product product = service.listarPorId(dtoRequest.getId());
+        if(product == null){
+            throw new ModeloNotFoundException("Id No encontrado "+dtoRequest.getId());
+        }
+        Product p = mapper.map(dtoRequest, Product.class);
+
+        Product obj = service.modificar(p);
+
+        ProductDTO dtoResponse = mapper.map(obj, ProductDTO.class);
+
+        return new ResponseEntity<>(dtoResponse,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception{
+        Product obj = service.listarPorId(id);
+        if (obj==null) {
+            throw new ModeloNotFoundException("Id No encontrado "+id);
+        } else {
+            service.eliminar(id);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

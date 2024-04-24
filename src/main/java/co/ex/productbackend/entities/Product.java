@@ -15,8 +15,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    @Size(min = 3, max = 70, message = "{name.size}")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "description")
