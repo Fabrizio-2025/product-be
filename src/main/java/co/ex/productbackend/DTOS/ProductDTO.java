@@ -15,13 +15,13 @@ import java.math.BigDecimal;
 public class ProductDTO {
 
     private Long id;
-    @Size(min = 3, max = 70, message = "El tamaño minimo del nombres es tres y el maximo es 70")
+    @Size(min = 3, max = 70, message = "The size of the name must be between 3 and 70 characters")
     private String name;
-    @Size(min = 3, max = 255, message = "El tamaño minimo de la descripcion es tres y el maximo es 255")
+    @Size(min = 3, max = 255, message = "The size of the description must be between 3 and 255 characters")
     private String description;
-    @Size(min = 3, max = 70, message = "El tamaño minimo de la marca es tres y el maximo es 70")
+    @Size(min = 3, max = 70, message = "The size of the brand must be between 3 and 70 characters")
     private String brand;
-    @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
+    @DecimalMin(value = "0.00", message = "The price must be greater than 0")
     private BigDecimal price;
 
 

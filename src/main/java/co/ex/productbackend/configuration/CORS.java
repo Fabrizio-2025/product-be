@@ -1,4 +1,4 @@
-package co.ex.productbackend.util;
+package co.ex.productbackend.configuration;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
