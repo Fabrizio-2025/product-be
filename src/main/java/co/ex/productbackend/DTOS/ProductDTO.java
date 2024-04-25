@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 public class ProductDTO {
 
     private Long id;
+
     @Size(min = 3, max = 70, message = "The size of the name must be between 3 and 70 characters")
     private String name;
     @Size(min = 3, max = 255, message = "The size of the description must be between 3 and 255 characters")
@@ -25,9 +26,5 @@ public class ProductDTO {
     private String brand;
     @DecimalMin(value = "0.00", message = "The price must be greater than 0")
     private BigDecimal price;
-
-    public String getId() {
-        return String.format("PROD-%04d", id);
-    }
 
 }

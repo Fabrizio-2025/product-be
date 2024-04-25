@@ -3,6 +3,7 @@ package co.ex.productbackend.controllers;
 import co.ex.productbackend.DTOS.ProductDTO;
 import co.ex.productbackend.entities.Product;
 import co.ex.productbackend.exception.ModeloNotFoundException;
+import co.ex.productbackend.response.ProductResponse;
 import co.ex.productbackend.services.ProductService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -11,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,17 +34,24 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> listarPorId(@PathVariable("id") Long id) throws Exception {
-        ProductDTO dtoResponse;
+    public ResponseEntity<ProductResponse> listarPorId(@PathVariable("id") Long id) throws Exception {
         Product obj = service.listarPorId(id);
-        if (obj==null) {
-            throw new ModeloNotFoundException("Id No encontrado "+id);
-
-        } else {
-            dtoResponse = mapper.map(obj, ProductDTO.class);
+        if (obj == null) {
+            throw new ModeloNotFoundException("ID not found " + id);
         }
 
-        return new ResponseEntity<>(dtoResponse,HttpStatus.OK);
+        ProductDTO dtoResponse = mapper.map(obj, ProductDTO.class);
+        String formattedId = String.format("PROD-%02d", dtoResponse.getId());
+
+        ProductResponse response = new ProductResponse(
+                formattedId,
+                dtoResponse.getName(),
+                dtoResponse.getDescription(),
+                dtoResponse.getBrand(),
+                dtoResponse.getPrice()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
@@ -51,9 +61,10 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> Modificar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
-        Product product = service.listarPorId(Long.parseLong(dtoRequest.getId()));
+        Product product = service.listarPorId((dtoRequest.getId()));
         if(product == null){
             throw new ModeloNotFoundException("Id No encontrado "+dtoRequest.getId());
         }

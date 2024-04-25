@@ -31,4 +31,9 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
+
+    public void setId(Long id) {
+        this.id = id;
+        this.name = "PROD-0" + id;
+    }
 }
