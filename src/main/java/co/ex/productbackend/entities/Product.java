@@ -32,8 +32,4 @@ public class Product {
     private BigDecimal price;
 
 
-    public void setId(Long id) {
-        this.id = id;
-        this.name = "PROD-0" + id;
-    }
 }
