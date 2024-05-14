@@ -55,10 +55,11 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registrar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
+    public ResponseEntity<ProductDTO> registrar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
         Product p = mapper.map(dtoRequest,Product.class);
         Product obj = service.registrar(p);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        ProductDTO dtoResponse = mapper.map(obj, ProductDTO.class);
+        return new ResponseEntity<>(dtoResponse,HttpStatus.CREATED);
     }
 
 
@@ -66,7 +67,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> Modificar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
         Product product = service.listarPorId((dtoRequest.getId()));
         if(product == null){
-            throw new ModeloNotFoundException("Id No encontrado "+dtoRequest.getId());
+            throw new ModeloNotFoundException("ID not found "+dtoRequest.getId());
         }
         Product p = mapper.map(dtoRequest, Product.class);
 
@@ -81,7 +82,7 @@ public class ProductController {
     public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception{
         Product obj = service.listarPorId(id);
         if (obj==null) {
-            throw new ModeloNotFoundException("Id No encontrado "+id);
+            throw new ModeloNotFoundException("ID not found "+id);
         } else {
             service.eliminar(id);
         }
