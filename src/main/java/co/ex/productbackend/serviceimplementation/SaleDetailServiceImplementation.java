@@ -1,5 +1,6 @@
 package co.ex.productbackend.serviceimplementation;
 
+import co.ex.productbackend.entities.Product;
 import co.ex.productbackend.entities.SaleDetail;
 import co.ex.productbackend.repositories.GenericRepo;
 import co.ex.productbackend.repositories.SaleDetailRepository;
@@ -20,7 +21,7 @@ public class SaleDetailServiceImplementation extends CRUDImplementation<SaleDeta
     }
 
     @Override
-    public List<SaleDetail> findBySaleId(Long saleId) throws Exception {
-        return repo.findBySaleId(saleId);
+    public List<Product> findProductsBySaleId(Long saleId) {
+        return repo.findProductsBySaleId(saleId);
     }
 }

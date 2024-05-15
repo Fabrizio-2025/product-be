@@ -42,7 +42,14 @@ public class SaleDetailController {
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
 
-
+    @GetMapping("/sale/{saleId}")
+    public ResponseEntity<List<ProductDTO>> listBySaleId(@PathVariable("saleId") Long saleId) throws Exception {
+        List<Product> products = service.findProductsBySaleId(saleId);
+        List<ProductDTO> dtoList = products.stream()
+                .map(product -> mapper.map(product, ProductDTO.class))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<SaleDetailDTO> registrar(@Valid @RequestBody SaleDetailDTO dto) throws Exception {
