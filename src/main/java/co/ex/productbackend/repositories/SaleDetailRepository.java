@@ -7,11 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SaleDetailRepository extends JpaRepository<SaleDetail, Long> {
+public interface SaleDetailRepository extends GenericRepo<SaleDetail, Long> {
 
     List<SaleDetail> findBySaleId(Long saleId);
 
-    List<SaleDetail> findByProductId(Long productId);
 
 
 }

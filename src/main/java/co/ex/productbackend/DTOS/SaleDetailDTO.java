@@ -15,10 +15,7 @@ public class SaleDetailDTO {
     private Long id;
     private Long saleId;
     private Long productId;
-    private String productName;
-    private BigDecimal productPrice;
     private Integer quantity;
-    private BigDecimal salePrice;
-
+    private BigDecimal price;
 
 }

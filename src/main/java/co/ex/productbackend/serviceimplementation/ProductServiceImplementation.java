@@ -23,4 +23,5 @@ public class ProductServiceImplementation extends CRUDImplementation<Product,Lon
     public List<Product> listByBrand(String brand) throws Exception {
         return repo.findByBrand(brand);
     }
+
 }

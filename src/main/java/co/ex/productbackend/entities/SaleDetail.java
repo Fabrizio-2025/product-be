@@ -34,4 +34,6 @@ public class SaleDetail {
     @Column(name = "PrecioVenta", nullable = false)
     private BigDecimal price;
 
+
+
 }
