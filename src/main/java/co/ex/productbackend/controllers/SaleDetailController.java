@@ -31,7 +31,7 @@ public class SaleDetailController {
 
     @GetMapping
     public ResponseEntity<List<SaleDetailDTO>> listar() throws Exception {
-        List<SaleDetailDTO> lista = service.listar().stream().map(p->mapper.map(p, SaleDetailDTO.class)).collect(Collectors.toList());
+        List<SaleDetailDTO> lista = service.listar().stream().map(p -> mapper.map(p, SaleDetailDTO.class)).collect(Collectors.toList());
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
@@ -43,8 +43,8 @@ public class SaleDetailController {
     }
 
     @GetMapping("/sale/{saleId}")
-    public ResponseEntity<List<ProductDTO>> listBySaleId(@PathVariable("saleId") Long saleId) throws Exception {
-        List<Product> products = service.findProductsBySaleId(saleId);
+    public ResponseEntity<List<ProductDTO>> listProductsBySaleId(@PathVariable("saleId") Long saleId) throws Exception {
+        List<Product> products = service.listProductsBySaleId(saleId);
         List<ProductDTO> dtoList = products.stream()
                 .map(product -> mapper.map(product, ProductDTO.class))
                 .collect(Collectors.toList());

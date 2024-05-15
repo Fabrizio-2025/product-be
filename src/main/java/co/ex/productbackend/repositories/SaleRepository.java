@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+
 @Repository
 public interface SaleRepository extends GenericRepo<Sale, Long> {
     List<Sale> findByDate(LocalDate date);

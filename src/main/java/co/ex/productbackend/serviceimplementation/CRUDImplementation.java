@@ -5,8 +5,8 @@ import co.ex.productbackend.services.ICRUD;
 
 import java.util.List;
 
-public abstract class CRUDImplementation <T,ID> implements ICRUD<T,ID> {
-    protected abstract GenericRepo<T,ID> getRepo();
+public abstract class CRUDImplementation<T, ID> implements ICRUD<T, ID> {
+    protected abstract GenericRepo<T, ID> getRepo();
 
     @Override
     public T registrar(T t) throws Exception {

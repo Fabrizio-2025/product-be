@@ -25,7 +25,7 @@ public class SaleController {
 
     @GetMapping
     public ResponseEntity<List<SaleDTO>> listar() throws Exception {
-        List<SaleDTO> lista = service.listar().stream().map(p->mapper.map(p, SaleDTO.class)).collect(Collectors.toList());
+        List<SaleDTO> lista = service.listar().stream().map(p -> mapper.map(p, SaleDTO.class)).collect(Collectors.toList());
         return ResponseEntity.ok(lista);
     }
 
@@ -37,26 +37,26 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registrar(@RequestBody SaleDTO dtoRequest) throws Exception{
-        Sale p = mapper.map(dtoRequest,Sale.class);
+    public ResponseEntity<Void> registrar(@RequestBody SaleDTO dtoRequest) throws Exception {
+        Sale p = mapper.map(dtoRequest, Sale.class);
         Sale obj = service.registrar(p);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> modificar(@RequestBody SaleDTO dtoRequest, @PathVariable("id") Long id) throws Exception{
+    public ResponseEntity<Void> modificar(@RequestBody SaleDTO dtoRequest, @PathVariable("id") Long id) throws Exception {
         Sale sale = service.listarPorId((dtoRequest.getId()));
         if (sale == null) {
             throw new Exception("ID not found " + dtoRequest.getId());
         }
-        Sale p = mapper.map(dtoRequest,Sale.class);
+        Sale p = mapper.map(dtoRequest, Sale.class);
         p.setId(id);
         Sale obj = service.modificar(p);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception{
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception {
         Sale obj = service.listarPorId(id);
         if (obj == null) {
             throw new Exception("ID not found " + id);

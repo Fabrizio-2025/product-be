@@ -27,7 +27,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> listar() throws Exception {
-        List<ProductDTO> lista = service.listar().stream().map(p->mapper.map(p, ProductDTO.class)).collect(Collectors.toList());
+        List<ProductDTO> lista = service.listar().stream().map(p -> mapper.map(p, ProductDTO.class)).collect(Collectors.toList());
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
@@ -62,19 +62,19 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> registrar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
-        Product p = mapper.map(dtoRequest,Product.class);
+    public ResponseEntity<ProductDTO> registrar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception {
+        Product p = mapper.map(dtoRequest, Product.class);
         Product obj = service.registrar(p);
         ProductDTO dtoResponse = mapper.map(obj, ProductDTO.class);
-        return new ResponseEntity<>(dtoResponse,HttpStatus.CREATED);
+        return new ResponseEntity<>(dtoResponse, HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> Modificar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception{
+    public ResponseEntity<ProductDTO> Modificar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception {
         Product product = service.listarPorId((dtoRequest.getId()));
-        if(product == null){
-            throw new ModeloNotFoundException("ID not found "+dtoRequest.getId());
+        if (product == null) {
+            throw new ModeloNotFoundException("ID not found " + dtoRequest.getId());
         }
         Product p = mapper.map(dtoRequest, Product.class);
 
@@ -82,14 +82,14 @@ public class ProductController {
 
         ProductDTO dtoResponse = mapper.map(obj, ProductDTO.class);
 
-        return new ResponseEntity<>(dtoResponse,HttpStatus.OK);
+        return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception{
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception {
         Product obj = service.listarPorId(id);
-        if (obj==null) {
-            throw new ModeloNotFoundException("ID not found "+id);
+        if (obj == null) {
+            throw new ModeloNotFoundException("ID not found " + id);
         } else {
             service.eliminar(id);
         }

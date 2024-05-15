@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class SaleServiceImplementation extends CRUDImplementation<Sale,Long> implements SaleService {
+public class SaleServiceImplementation extends CRUDImplementation<Sale, Long> implements SaleService {
     @Autowired
     private SaleRepository repo;
 

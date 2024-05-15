@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SaleDetailServiceImplementation extends CRUDImplementation<SaleDetail,Long> implements SaleDetailService {
+public class SaleDetailServiceImplementation extends CRUDImplementation<SaleDetail, Long> implements SaleDetailService {
     @Autowired
     private SaleDetailRepository repo;
 
@@ -21,7 +21,7 @@ public class SaleDetailServiceImplementation extends CRUDImplementation<SaleDeta
     }
 
     @Override
-    public List<Product> findProductsBySaleId(Long saleId) {
-        return repo.findProductsBySaleId(saleId);
+    public List<Product> listProductsBySaleId(Long saleId) {
+        return repo.listProductsBySaleId(saleId);
     }
 }

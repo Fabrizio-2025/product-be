@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductServiceImplementation extends CRUDImplementation<Product,Long> implements ProductService{
+public class ProductServiceImplementation extends CRUDImplementation<Product, Long> implements ProductService {
     @Autowired
     private ProductRepository repo;
 
