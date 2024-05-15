@@ -12,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,6 +50,15 @@ public class ProductController {
         );
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/brand")
+    public ResponseEntity<List<ProductDTO>> listByBrand(@RequestParam("brand") String brand) throws Exception {
+        List<Product> products = service.listByBrand(brand);
+        List<ProductDTO> dtoList = products.stream()
+                .map(product -> mapper.map(product, ProductDTO.class))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
     @PostMapping
