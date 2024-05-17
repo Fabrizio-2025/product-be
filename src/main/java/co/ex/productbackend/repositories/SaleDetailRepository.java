@@ -11,9 +11,10 @@ import java.util.List;
 @Repository
 public interface SaleDetailRepository extends GenericRepo<SaleDetail, Long> {
 
-
     @Query("SELECT sd.product FROM SaleDetail sd WHERE sd.sale.id = :saleId")
     List<Product> listProductsBySaleId(@Param("saleId") Long saleId);
 
+
+    List<SaleDetail> findBySaleId(Long saleId);
 
 }

@@ -31,9 +31,7 @@ public class SaleDetail {
     @Column(name = "Cantidad", nullable = false)
     private Integer quantity;
 
-    @Column(name = "PrecioVenta", nullable = false)
+    @Column(name = "price")
     private BigDecimal price;
-
-
 
 }

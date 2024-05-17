@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/sale-details")
@@ -51,9 +52,16 @@ public class SaleDetailController {
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
+    @GetMapping("/sale/{saleId}/total-price")
+    public ResponseEntity<BigDecimal> getTotalPriceBySaleId(@PathVariable("saleId") Long saleId) throws Exception {
+        BigDecimal totalPrice = service.calculateTotalPriceBySaleId(saleId);
+        return new ResponseEntity<>(totalPrice, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<SaleDetailDTO> registrar(@Valid @RequestBody SaleDetailDTO dto) throws Exception {
-        SaleDetail obj = service.registrar(mapper.map(dto, SaleDetail.class));
+        SaleDetail saleDetail = mapper.map(dto, SaleDetail.class);
+        SaleDetail obj = service.registrar(saleDetail);
         SaleDetailDTO dtoResponse = mapper.map(obj, SaleDetailDTO.class);
         return new ResponseEntity<>(dtoResponse, HttpStatus.CREATED);
     }
