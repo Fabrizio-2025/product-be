@@ -24,4 +24,5 @@ public class SaleServiceImplementation extends CRUDImplementation<Sale, Long> im
     public List<Sale> findByDate(LocalDate date) throws Exception {
         return repo.findByDate(date);
     }
+
 }

@@ -8,6 +8,7 @@ import co.ex.productbackend.services.ProductService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -90,9 +91,13 @@ public class ProductController {
         Product obj = service.listarPorId(id);
         if (obj == null) {
             throw new ModeloNotFoundException("ID not found " + id);
-        } else {
-            service.eliminar(id);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            service.eliminar(id);
+            return ResponseEntity.ok().build();
+        } catch (DataIntegrityViolationException e) {
+            throw new Exception("Cannot delete product with associated sales", e);
+        }
     }
+
 }

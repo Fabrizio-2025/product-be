@@ -61,6 +61,16 @@ public class SaleDetailController {
     @PostMapping
     public ResponseEntity<SaleDetailDTO> registrar(@Valid @RequestBody SaleDetailDTO dto) throws Exception {
         SaleDetail saleDetail = mapper.map(dto, SaleDetail.class);
+
+        // Obtener el producto asociado
+        Product product = productService.listarPorId(saleDetail.getProduct().getId());
+        if (product == null) {
+            throw new Exception("Product not found");
+        }
+
+        // Calcular el precio total
+        saleDetail.setPrice(product.getPrice().multiply(BigDecimal.valueOf(saleDetail.getQuantity())));
+
         SaleDetail obj = service.registrar(saleDetail);
         SaleDetailDTO dtoResponse = mapper.map(obj, SaleDetailDTO.class);
         return new ResponseEntity<>(dtoResponse, HttpStatus.CREATED);
@@ -68,7 +78,19 @@ public class SaleDetailController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SaleDetailDTO> modificar(@Valid @RequestBody SaleDetailDTO dto, @PathVariable("id") Long id) throws Exception {
-        SaleDetail obj = service.modificar(mapper.map(dto, SaleDetail.class));
+        SaleDetail saleDetail = mapper.map(dto, SaleDetail.class);
+        saleDetail.setId(id);
+
+        // Obtener el producto asociado
+        Product product = productService.listarPorId(saleDetail.getProduct().getId());
+        if (product == null) {
+            throw new Exception("Product not found");
+        }
+
+        // Calcular el precio total
+        saleDetail.setPrice(product.getPrice().multiply(BigDecimal.valueOf(saleDetail.getQuantity())));
+
+        SaleDetail obj = service.modificar(saleDetail);
         SaleDetailDTO dtoResponse = mapper.map(obj, SaleDetailDTO.class);
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
@@ -76,6 +98,6 @@ public class SaleDetailController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception {
         service.eliminar(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
