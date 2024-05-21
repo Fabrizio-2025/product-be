@@ -1,6 +1,7 @@
 package co.ex.productbackend.controllers;
 
 import co.ex.productbackend.DTOS.ProductDTO;
+import co.ex.productbackend.DTOS.ProductWithQuantityDTO;
 import co.ex.productbackend.DTOS.SaleDetailDTO;
 import co.ex.productbackend.entities.Product;
 import co.ex.productbackend.entities.SaleDetail;
@@ -44,11 +45,16 @@ public class SaleDetailController {
     }
 
     @GetMapping("/sale/{saleId}")
-    public ResponseEntity<List<ProductDTO>> listProductsBySaleId(@PathVariable("saleId") Long saleId) throws Exception {
-        List<Product> products = service.listProductsBySaleId(saleId);
-        List<ProductDTO> dtoList = products.stream()
-                .map(product -> mapper.map(product, ProductDTO.class))
-                .collect(Collectors.toList());
+    public ResponseEntity<List<ProductWithQuantityDTO>> listProductsBySaleId(@PathVariable("saleId") Long saleId) throws Exception {
+        List<SaleDetail> saleDetails = service.findBySaleId(saleId);
+
+        List<ProductWithQuantityDTO> dtoList = saleDetails.stream().map(saleDetail -> {
+            Product product = saleDetail.getProduct();
+            ProductWithQuantityDTO dto = mapper.map(product, ProductWithQuantityDTO.class);
+            dto.setQuantity(saleDetail.getQuantity());
+            return dto;
+        }).collect(Collectors.toList());
+
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 

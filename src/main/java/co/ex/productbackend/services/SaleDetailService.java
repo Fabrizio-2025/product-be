@@ -11,6 +11,7 @@ public interface SaleDetailService extends ICRUD<SaleDetail, Long> {
 
     List<Product> listProductsBySaleId(Long saleId);
 
+    List<SaleDetail> findBySaleId(Long saleId);
 
     BigDecimal calculateTotalPriceBySaleId(Long saleId);
 

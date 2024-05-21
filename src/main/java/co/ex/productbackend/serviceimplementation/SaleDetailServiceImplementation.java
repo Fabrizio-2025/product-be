@@ -45,8 +45,8 @@ public class SaleDetailServiceImplementation extends CRUDImplementation<SaleDeta
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-
-    private List<SaleDetail> findBySaleId(Long saleId) {
+    @Override
+    public List<SaleDetail> findBySaleId(Long saleId) {
         return repo.findBySaleId(saleId);
     }
 
