@@ -109,7 +109,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<Map<String, String>> eliminar(@PathVariable("id") Long id) throws Exception {
         Product obj = service.listarPorId(id);
         if (obj == null) {
             throw new ModeloNotFoundException("ID not found " + id + ", Samurai.");
@@ -118,7 +118,9 @@ public class ProductController {
             service.eliminar(id);
             return ResponseEntity.ok().build();
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("Cannot delete product with associated sales", e);
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Cannot delete product because it is associated with a sale.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
