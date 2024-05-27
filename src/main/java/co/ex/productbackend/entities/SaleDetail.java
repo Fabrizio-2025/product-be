@@ -28,7 +28,7 @@ public class SaleDetail {
     @JoinColumn(name = "ID_Product", nullable = false)
     private Product product;
 
-    @Column(name = "Cantidad", nullable = false)
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
     @Column(name = "price")

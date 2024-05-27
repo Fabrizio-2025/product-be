@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImplementation extends CRUDImplementation<Product, Long> implements ProductService {
@@ -22,6 +23,12 @@ public class ProductServiceImplementation extends CRUDImplementation<Product, Lo
     @Override
     public List<Product> listByBrand(String brand) throws Exception {
         return repo.findByBrand(brand);
+    }
+
+    @Override
+    public List<Product> findTopPurchasedProducts(int limit) {
+        List<Product> products = repo.findTop4MostPurchasedProducts();
+        return products.stream().limit(limit).collect(Collectors.toList());
     }
 
 }

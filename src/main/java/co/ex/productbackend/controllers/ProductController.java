@@ -124,4 +124,17 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/top4-most-purchased")
+    public ResponseEntity<?> getTop4MostPurchasedProducts() throws Exception {
+        List<Product> products = service.findTopPurchasedProducts(4);
+        List<ProductDTO> dtoList = products.stream()
+                .map(product -> mapper.map(product, ProductDTO.class))
+                .collect(Collectors.toList());
+        if (dtoList.isEmpty()) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "No products found, Samurai.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
 }
