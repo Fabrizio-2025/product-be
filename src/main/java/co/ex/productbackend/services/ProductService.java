@@ -9,4 +9,6 @@ public interface ProductService extends ICRUD<Product, Long> {
     List<Product> listByBrand(String brand) throws Exception;
 
     List<Product> findTopPurchasedProducts(int limit);
+
+    List<Product> listByNameAndBrand(String name, String brand);
 }

@@ -14,4 +14,6 @@ public interface ProductRepository extends GenericRepo<Product, Long> {
 
     List<Product> findByBrand(String brand);
 
+    @Query("SELECT p FROM Product p WHERE p.name = :name AND p.brand = :brand")
+    List<Product> findByNameAndBrand(String name, String brand);
 }

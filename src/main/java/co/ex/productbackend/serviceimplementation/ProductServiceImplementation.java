@@ -31,4 +31,9 @@ public class ProductServiceImplementation extends CRUDImplementation<Product, Lo
         return products.stream().limit(limit).collect(Collectors.toList());
     }
 
+    @Override
+    public List<Product> listByNameAndBrand(String name, String brand) {
+        return repo.findByNameAndBrand(name, brand);
+    }
+
 }

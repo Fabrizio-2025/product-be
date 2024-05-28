@@ -82,6 +82,16 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Map<String, Object>> registrar(@Valid @RequestBody ProductDTO dtoRequest) throws Exception {
         Product p = mapper.map(dtoRequest, Product.class);
+
+        // Verificar si ya existe un producto con el mismo nombre y marca
+        List<Product> existingProducts = service.listByNameAndBrand(p.getName(), p.getBrand());
+        if (!existingProducts.isEmpty()) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Error creating a product, Samurai. Product with the same name and brand already exists.");
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        // Registrar el producto si no existe
         Product obj = service.registrar(p);
         ProductDTO dtoResponse = mapper.map(obj, ProductDTO.class);
 
