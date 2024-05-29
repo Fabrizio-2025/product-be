@@ -6,10 +6,13 @@ import co.ex.productbackend.services.SaleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -65,8 +68,13 @@ public class SaleController {
     }
 
     @GetMapping("/date")
-    public ResponseEntity<List<SaleDTO>> listarPorFecha(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String date) throws Exception {
+    public ResponseEntity<?> listarPorFecha(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String date) throws Exception {
         List<Sale> sales = service.findByDate(date);
+        if (sales.isEmpty()) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "No sales found for the given date, Samurai.");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
         List<SaleDTO> dtoList = sales.stream().map(sale -> mapper.map(sale, SaleDTO.class)).collect(Collectors.toList());
         return ResponseEntity.ok(dtoList);
     }
