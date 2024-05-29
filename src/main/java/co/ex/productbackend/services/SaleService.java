@@ -2,11 +2,11 @@ package co.ex.productbackend.services;
 
 import co.ex.productbackend.entities.Sale;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
 public interface SaleService extends ICRUD<Sale, Long> {
 
-    List<Sale> findByDate(LocalDate date) throws Exception;
+    List<Sale> findByDate(String date);
+
 }

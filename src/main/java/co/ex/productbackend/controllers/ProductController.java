@@ -1,6 +1,7 @@
 package co.ex.productbackend.controllers;
 
 import co.ex.productbackend.DTOS.ProductDTO;
+import co.ex.productbackend.DTOS.ProductWithTotalQuantityDTO;
 import co.ex.productbackend.entities.Product;
 import co.ex.productbackend.exception.ModeloNotFoundException;
 import co.ex.productbackend.response.ProductResponse;
@@ -134,17 +135,17 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/top4-most-purchased")
-    public ResponseEntity<?> getTop4MostPurchasedProducts() throws Exception {
-        List<Product> products = service.findTopPurchasedProducts(4);
-        List<ProductDTO> dtoList = products.stream()
-                .map(product -> mapper.map(product, ProductDTO.class))
-                .collect(Collectors.toList());
-        if (dtoList.isEmpty()) {
+
+
+    @GetMapping("/top4-most-purchased-with-quantity")
+    public ResponseEntity<?> getTop4MostPurchasedProductsWithQuantity() throws Exception {
+        List<ProductWithTotalQuantityDTO> products = service.findTopPurchasedProducts(4);
+        if (products.isEmpty()) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "No products found, Samurai.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
+
 }

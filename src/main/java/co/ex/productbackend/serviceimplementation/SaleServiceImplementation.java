@@ -21,8 +21,9 @@ public class SaleServiceImplementation extends CRUDImplementation<Sale, Long> im
     }
 
     @Override
-    public List<Sale> findByDate(LocalDate date) throws Exception {
-        return repo.findByDate(date);
+    public List<Sale> findByDate(String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return repo.findByDate(localDate);
     }
 
 }
