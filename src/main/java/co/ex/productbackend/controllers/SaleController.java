@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,22 +41,34 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registrar(@RequestBody SaleDTO dtoRequest) throws Exception {
+    public ResponseEntity<Map<String, Object>> registrar(@RequestBody SaleDTO dtoRequest) throws Exception {
         Sale p = mapper.map(dtoRequest, Sale.class);
         Sale obj = service.registrar(p);
-        return ResponseEntity.ok().build();
+        SaleDTO dtoResponse = mapper.map(obj, SaleDTO.class);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Sale created successfully, Samurai.");
+        response.put("sale", dtoResponse);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> modificar(@RequestBody SaleDTO dtoRequest, @PathVariable("id") Long id) throws Exception {
-        Sale sale = service.listarPorId((dtoRequest.getId()));
+    public ResponseEntity<?> modificar(@RequestBody SaleDTO dtoRequest, @PathVariable("id") Long id) throws Exception {
+        Sale sale = service.listarPorId(id);
         if (sale == null) {
-            throw new Exception("ID not found " + dtoRequest.getId());
+            throw new Exception("The sale does not exist, Samurai.");
         }
         Sale p = mapper.map(dtoRequest, Sale.class);
         p.setId(id);
         Sale obj = service.modificar(p);
-        return ResponseEntity.ok().build();
+
+        SaleDTO dtoResponse = mapper.map(obj, SaleDTO.class);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Sale updated successfully, Samurai.");
+        response.put("sale", dtoResponse);
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
@@ -68,7 +82,7 @@ public class SaleController {
     }
 
     @GetMapping("/date")
-    public ResponseEntity<?> listarPorFecha(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String date) throws Exception {
+    public ResponseEntity<?> listarPorFecha(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws Exception {
         List<Sale> sales = service.findByDate(date);
         if (sales.isEmpty()) {
             Map<String, String> response = new HashMap<>();
