@@ -48,4 +48,8 @@ public class ProductServiceImplementation extends CRUDImplementation<Product, Lo
         return repo.findByNameAndBrand(name, brand);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        return repo.existsById(id);
+    }
 }

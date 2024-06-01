@@ -12,4 +12,6 @@ public interface ProductService extends ICRUD<Product, Long> {
     List<Product> listByNameAndBrand(String name, String brand);
 
     List<ProductWithTotalQuantityDTO> findTopPurchasedProducts(int limit);
+
+    boolean existsById(Long id);
 }

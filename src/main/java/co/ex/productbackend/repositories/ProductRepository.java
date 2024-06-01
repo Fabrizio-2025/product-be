@@ -10,8 +10,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends GenericRepo<Product, Long> {
 
-    //@Query(value = "SELECT p.* FROM products p JOIN sale_details sd ON p.id = sd.id_product GROUP BY p.id ORDER BY SUM(sd.quantity) DESC LIMIT 4", nativeQuery = true)
-    //List<Product> findTop4MostPurchasedProducts();
+    boolean existsById(Long id);
 
     List<Product> findByBrand(String brand);
 
