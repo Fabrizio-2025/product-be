@@ -5,10 +5,9 @@ import co.ex.productbackend.DTOS.SaleDetailDTO;
 import co.ex.productbackend.DTOS.SaleWithDetailsDTO;
 import co.ex.productbackend.entities.Sale;
 import co.ex.productbackend.entities.SaleDetail;
+import co.ex.productbackend.services.ProductService;
 import co.ex.productbackend.services.SaleDetailService;
 import co.ex.productbackend.services.SaleService;
-import co.ex.productbackend.services.ProductService;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -75,7 +74,7 @@ public class SaleController {
             for (SaleDetailDTO detailDTO : saleWithDetailsDTO.getSaleDetails()) {
                 if (!productService.existsById(detailDTO.getProductId())) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body("Error: One or more products do not exist, Samurai.");
+                            .body(Map.of("error", "One or more products do not exist, Samurai."));
                 }
             }
 
@@ -96,15 +95,16 @@ public class SaleController {
                     }).collect(Collectors.toList());
 
             // Construcción del mensaje de respuesta con el ID de Sale y los IDs de SaleDetail
-            String responseMessage = String.format("Sale (ID: %d) and SaleDetails created successfully, Samurai. SaleDetail IDs: %s",
-                    savedSale.getId(), saleDetailIds);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", String.format("Sale (ID: %d) and SaleDetails created successfully, Samurai.", savedSale.getId()));
+            response.put("saleDetailIds", saleDetailIds);
 
             // Respuesta exitosa
-            return ResponseEntity.ok(responseMessage);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             // Manejo de errores
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error creating Sale and SaleDetails: " + e.getMessage());
+                    .body(Map.of("error", "Error creating Sale and SaleDetails: " + e.getMessage()));
         }
     }
 
