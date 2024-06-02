@@ -10,4 +10,5 @@ public interface SaleService extends ICRUD<Sale, Long> {
 
     List<Sale> findByDate(LocalDate date);
 
+    long countSales();
 }

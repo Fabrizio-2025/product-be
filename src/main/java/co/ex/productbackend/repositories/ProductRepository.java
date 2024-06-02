@@ -24,4 +24,6 @@ public interface ProductRepository extends GenericRepo<Product, Long> {
             "ORDER BY totalQuantity DESC " +
             "LIMIT :limit", nativeQuery = true)
     List<Object[]> findTopPurchasedProducts(@Param("limit") int limit);
+
+
 }

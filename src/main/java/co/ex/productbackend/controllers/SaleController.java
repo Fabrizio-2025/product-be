@@ -149,4 +149,13 @@ public class SaleController {
         return ResponseEntity.ok(dtoList);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Map<String, Object>> countSales() {
+        long count = service.countSales();
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Total number of sales, Samurai.");
+        response.put("count", count);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

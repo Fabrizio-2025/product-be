@@ -25,4 +25,9 @@ public class SaleServiceImplementation extends CRUDImplementation<Sale, Long> im
         return repo.findByDate(date);
     }
 
+    @Override
+    public long countSales() {
+        return repo.count();
+    }
+
 }
