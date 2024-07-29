@@ -43,4 +43,22 @@ public class ProductImageServiceImpl extends CRUDImplementation<ProductImage, Lo
     public Optional<ProductImage> getImage(Long id) {
         return repo.findById(id);
     }
+
+    @Override
+    public ProductImage updateImage(Long productId, MultipartFile file) throws IOException {
+        Product product = productRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Optional<ProductImage> existingImageOpt = repo.findByProductId(productId);
+        ProductImage image;
+        if (existingImageOpt.isPresent()) {
+            image = existingImageOpt.get();
+        } else {
+            image = new ProductImage();
+            image.setProduct(product);
+            image.setCreatedAt(LocalDateTime.now());
+        }
+        image.setImageData(file.getBytes());
+        return repo.save(image);
+    }
 }

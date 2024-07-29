@@ -32,6 +32,18 @@ public class ProductImageController {
         return ResponseEntity.ok(imageDTO);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<ProductImageDTO> updateImage(@RequestParam("productId") Long productId,
+                                                       @RequestParam("file") MultipartFile file) throws Exception {
+        ProductImage updatedImage = service.updateImage(productId, file);
+        ProductImageDTO imageDTO = new ProductImageDTO();
+        imageDTO.setId(updatedImage.getId());
+        imageDTO.setProductId(updatedImage.getProduct().getId());
+        imageDTO.setImageData(Base64.getEncoder().encodeToString(updatedImage.getImageData()));
+        imageDTO.setCreatedAt(updatedImage.getCreatedAt());
+        return ResponseEntity.ok(imageDTO);
+    }
+
     @GetMapping("media/{id}")
     public ResponseEntity<byte[]> getImagesmedia(@PathVariable Long id) {
         Optional<ProductImage> imageOptional = service.getImage(id);
